@@ -1828,7 +1828,7 @@ ATEerror_t Lora_UpdateConfigTable(void)
   * @param void
   * @retval None
 ******************************************************************************/
-void Lora_fsm(void)
+void Lora_fsm(void) //funzione contenente la macchina a stati
 {
   RetCode_t LoraModuleRetCode;
   ATEerror_t LoraCmdRetCode;
