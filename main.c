@@ -107,7 +107,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 #define JOIN_MODE                  OTAA_JOIN_MODE   /*ABP_JOIN_MODE */ /*LoRaWan join methode*/
 
 #ifdef USE_LRWAN_NS1
-#define FREQ_BAND                  /*EU868*/ CN470PREQUEL
+#define FREQ_BAND                 EU868 //CN470PREQUEL
 #endif
 
 
@@ -158,8 +158,8 @@ int main(void)
   while (1)
   {
 
-    /* run the LoRa Modem state machine*/
-    Lora_fsm();
+    //macchina a stati 
+    Lora_fsm(); //riga 1831 del file lora_driver.c
     DISABLE_IRQ();
     /* if an interrupt has occurred after DISABLE_IRQ, it is kept pending
      * and cortex will not enter low power anyway  */
