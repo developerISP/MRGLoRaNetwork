@@ -6,6 +6,7 @@ Files related to the acquisition, communnication and ... are organized in the "n
 
 # Meteorology
 Files for the analysis of meteorological variables are organized in the "meteorology" directory.
+```
 .
 └── meteorology
     ├── data
@@ -16,3 +17,4 @@ Files for the analysis of meteorological variables are organized in the "meteoro
     └── outputs
         ├── MRGtemperaturetypicalyear.csv
         └── MRGtemperaturetypicalyear.png
+'''
