@@ -13,7 +13,6 @@ Files for the analysis of meteorological variables are organized in the "meteoro
     │   ├── MRG_2017_2018.csv
     │   └── P_Valles_2010_2020.csv
     ├── main.R
-    ├── meteorology.Rproj
     └── outputs
         ├── MRGtemperaturetypicalyear.csv
         └── MRGtemperaturetypicalyear.png
