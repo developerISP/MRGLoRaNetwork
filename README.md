@@ -16,4 +16,4 @@ Files for the analysis of meteorological variables are organized in the "meteoro
     └── outputs
         ├── MRGtemperaturetypicalyear.csv
         └── MRGtemperaturetypicalyear.png
-'''
+```
