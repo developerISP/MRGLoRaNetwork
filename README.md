@@ -14,6 +14,17 @@ Files for the analysis of meteorological variables are organized in the "meteoro
     │   └── P_Valles_2010_2020.csv
     ├── main.R
     └── outputs
+        ├── MRGatmosphericpressuretypicalyear.csv
+        ├── MRGatmosphericpressuretypicalyear.png
+        ├── MRGrelativehumiditytypicalyear.csv
+        ├── MRGrelativehumiditytypicalyear.png
+        ├── MRGsolarradiationtypicalyear.csv
+        ├── MRGsolarradiationtypicalyear.png
         ├── MRGtemperaturetypicalyear.csv
-        └── MRGtemperaturetypicalyear.png
+        ├── MRGtemperaturetypicalyear.png
+        ├── MRGwinddirectiontypicalyear.csv
+        ├── MRGwindspeedtypicalyear.csv
+        └── MRGwindspeedtypicalyear.png
+
+3 directories, 14 files
 ```
