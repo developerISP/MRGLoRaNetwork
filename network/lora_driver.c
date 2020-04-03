@@ -1980,7 +1980,7 @@ void Lora_fsm(void) //funzione contenente la macchina a stati
           /*Protect Timer to overcome the USI Problem -- USI modem doesn't return value when the netork is not joined*/
           /*on timer out we will go out of the sleep mode*/
           TimerInit(&JoinProtectTimer, Lora_OnJoinProtectTimerEvt);
-          TimerSetValue(&JoinProtectTimer, 20000);
+          TimerSetValue(&JoinProtectTimer, 60000); //60sec di attesa prima di inviare i nuovi dati
           TimerStart(&JoinProtectTimer);
 #endif
           DeviceState = DEVICE_SLEEP;
