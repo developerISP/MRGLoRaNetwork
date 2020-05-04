@@ -2,7 +2,7 @@
 Repository for the school-work project between ISP-CNR and ITIS MaxPlack 
 
 # Network
-Files related to the acquisition, communnication and ... are organized in the "network" directory. 
+Files related to the acquisition, communication and ... are organized in the "network" directory. 
 
 # Meteorology
 Files for the analysis of meteorological variables are organized in the "meteorology" directory.
