@@ -5,11 +5,13 @@ void main() {
   runApp(MyApp());
 }
 
+///create the web application
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'progetto CNR',
+      title: 'CNR project',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

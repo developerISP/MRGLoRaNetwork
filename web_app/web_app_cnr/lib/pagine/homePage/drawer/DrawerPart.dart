@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import '../tabs/terzoTab.dart';
 
+///Define all the section about the drawer or sideBar
 class DrawerPart extends StatelessWidget {
+
+  ///generate the drawer (or the sideBar)
   const DrawerPart({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       
-
       children: <Widget>[
         
-
         DrawerHeader(
 
           child: Container(
-            alignment: Alignment.center,
-            child: Text("CNR web application", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+            alignment: Alignment.bottomLeft,
+            child: Text("HomePage", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
           ),
 
           decoration: BoxDecoration(
@@ -33,33 +33,55 @@ class DrawerPart extends StatelessWidget {
           child: ListView(
             children: <Widget>[
 
-              FlatButton(
-                onPressed: () {
+              ListTile(
+                onTap: () {
+                },
+                onLongPress: () => null,
+                
+                leading: Icon(Icons.insert_chart),
+                title: Text("overview ozon chart"),
+                trailing: Icon(Icons.arrow_right),
+
+                
+                
+              ),
+
+              ListTile(
+                onTap: () {
                   Navigator.pop(context);
                 },
                 onLongPress: () => null,
-                child: Text("prima pagina"),
-                splashColor: Colors.lightBlue[50],
+                
+                leading: Icon(Icons.insert_chart),
+                title: Text("overview temperature chart"),
+                trailing: Icon(Icons.arrow_right),
+
+                
               ),
 
-              FlatButton(
-                onPressed: () {
+              ListTile(
+                onTap: () {
                   Navigator.pop(context);
                 },
                 onLongPress: () => null,
-                child: Text("seconda pagina"),
-                splashColor: Colors.lightBlue[50],
+                
+                leading: Icon(Icons.insert_chart),
+                title: Text("overview umidity chart"),
+                trailing: Icon(Icons.arrow_right),
+
               ),
 
-              FlatButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TerzoTab()));
+              ListTile(
+                onTap: () {
+                  Navigator.pop(context);
                 },
                 onLongPress: () => null,
-                child: Text("terza pagina"),
-                splashColor: Colors.lightBlue[50],
-              ),
+                
+                leading: Icon(Icons.insert_chart),
+                title: Text("overview wind chart"),
+                trailing: Icon(Icons.arrow_right),
 
+              ),
 
             ],
           )
