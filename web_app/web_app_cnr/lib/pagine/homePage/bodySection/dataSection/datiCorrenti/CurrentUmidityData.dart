@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../indicatori/OzonIndicator.dart';
+import '../indicatori/UmidityIndicator.dart';
 import '../../../HomePage.dart' show Data;
 
-///create and return all the ozon indicator section 
+///create and return all the umidity indicator section 
 ///including the part with all the neccessary information 
 ///such as:
 ///1. the value
 ///2. the unit of measurment
 ///3. the date of that value
 ///4. the two button to move around the chart
-class CurrentOzonData extends StatefulWidget {
+class CurrentUmidityData extends StatefulWidget {
 
   ///the unit of measurement of the indicator
   String _unit;
 
-  ///the value that the indicator will show
+  ///the value that tha indicator will show
   double _data;
 
   ///the date that the indicator will show
@@ -33,14 +33,15 @@ class CurrentOzonData extends StatefulWidget {
   ///the callBack function that permit to change the showed data
   Function _selectData;
 
-  ///create and return all the ozon indicator section 
+
+  ///create and return all the umidity indicator section 
   ///including the part with all the neccessary information 
   ///such as:
   ///1. the value
   ///2. the unit of measurment
   ///3. the date of that value
   ///4. the two button to move around the chart
-  CurrentOzonData(String unit, double data, DateTime date, Color color, double width, double height, {Function selectData}){
+  CurrentUmidityData(String unit, double data, DateTime date, Color color, double width, double height, {Function selectData}){
     this._unit = unit;
     this._data = data;
     this._date = date;
@@ -53,15 +54,16 @@ class CurrentOzonData extends StatefulWidget {
   }
 
   @override
-  _CurrentOzonDataState createState() => _CurrentOzonDataState();
+  _CurrentUmidityDataState createState() => _CurrentUmidityDataState();
 }
 
 
-class _CurrentOzonDataState extends State<CurrentOzonData> {
+class _CurrentUmidityDataState extends State<CurrentUmidityData> {
+  
   
   @override
   void initState() {
-    
+
     super.initState();
   }
 
@@ -83,47 +85,55 @@ class _CurrentOzonDataState extends State<CurrentOzonData> {
             Expanded(
               flex: 8,
               //_ animation
-              child:  TweenAnimationBuilder(
+              child: TweenAnimationBuilder(
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeOutQuad,
                 tween: Tween<double>(begin: 0, end: this.widget._data),
+
                 builder: (BuildContext context, double value, Widget child) {
 
                   return Container(//_indicator
                     child: CustomPaint(
-                      painter: OzonIndicator(value, 100, 0,  widget._color),
+                      painter: UmidityIndicator(value, 100, 0, widget._color),
                       size: Size(widget._width, widget._height),
 
                       child: Container(
                         width: widget._width,
                         height: widget._height,
 
-                        child: Center(//_inner part of the indicator 
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "${widget._date.toString().split(" ")[0]} value",
-                                style: TextStyle(fontSize: 18),
-                              ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
 
-                              Row(
+                          children: <Widget>[
+                            Container(//_inner part of the indicator 
+
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(//_ part that show the value
-                                    "${double.parse(value.toStringAsFixed(1))}",
-                                    style: TextStyle(fontSize: 60),
+                                  Text(
+                                    "${widget._date.toString().split(" ")[0]} value",
+                                    style: TextStyle(fontSize: 18),
                                   ),
 
-                                  Text(//_ unit of measurement
-                                    widget._unit,
-                                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-                                  )
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(//_ part that show the value
+                                        "${double.parse(value.toStringAsFixed(1))}",
+                                        style: TextStyle(fontSize: 60),
+                                      ),
+
+                                      Text(//_ unit of measurement
+                                        widget._unit,
+                                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+
                                 ],
                               ),
-
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -131,10 +141,10 @@ class _CurrentOzonDataState extends State<CurrentOzonData> {
                     alignment: Alignment.center,
                   );
 
-
                 },
               ),
-
+                
+                
             ),
 
             Expanded(

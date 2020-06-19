@@ -7,13 +7,23 @@ import 'tabs/TimeBar.dart';
 import 'bodySection/BodySection.dart';
 import 'drawer/DrawerPart.dart';
 
+class WindValue{
+  double strenght;
+  double direction;
+
+  WindValue(this.strenght, this.direction);
+}
+
 //!IMPORTANTE  questa classe è qui temporaneamente per il testing
 ///define the variable for the line chart
 class Data{
-  String date;
-  double value;
+  DateTime date;
+  double ozonValue;
+  double tempValue;
+  double umidityValue;
+  WindValue windValue;
 
-  Data(this.date, this.value);
+  Data({this.date, this.ozonValue, this.tempValue, this.umidityValue, this.windValue});
 }
 
 ///Define the intervall of the showed data
@@ -39,20 +49,43 @@ class _HomePageState extends State<HomePage> {
 
   ///The variable for the line chart
   List<Data> data;
+
+
   ///The variable for the intervall
   Intervall intervall;
 
+  ///the botton pop up for the intervall selection
   Future<dynamic> bottomSheetOutput;
+
+  ///the length of the data
+  int length;
 
   
   ///Initialize [data] and [intervall]
   @override
   void initState() {
+    this.length = 20;
+    DateTime day = new DateTime.now();
+
+    day = DateTime.parse(day.toString().split(" ")[0]);
+    
+    
     //initialization of this.data
-    this.data = [
-      for(int i=1; i<=20; i++)
-        new Data("$i/05/2020", Random().nextInt(100).toDouble()),
+     this.data = [
+      for(int i=0; i<this.length; i++)
+        
+        new Data(
+          date: day.subtract(Duration(days: length-i-1)),
+
+          ozonValue: Random().nextInt(100).toDouble() -50,
+          tempValue: Random().nextInt(100).toDouble() -50,
+          umidityValue: Random().nextInt(100).toDouble() -50,
+          windValue: WindValue(Random().nextInt(100).toDouble() -50,  Random().nextInt(360).toDouble())
+        ),
     ];
+    
+
+
     //initialization of intervall
     this.intervall = Intervall(
       this.data.length - 15 - 1 < 0
@@ -70,18 +103,16 @@ class _HomePageState extends State<HomePage> {
       intervall.min = min;
       intervall.max = max;
     });
-    //intervall.min = min;
-    //intervall.max = max;
   }
 
   ///this function generate a bottom sheet when the button on the appBar is pressed
   void onButtonPressed(){
 
     TimeBar tb = TimeBar(
-      startDate: this.data[intervall.min],
-      endDate: this.data[intervall.max-1],
+      startDate: this.data[this.intervall.min].date,
+      endDate: this.data[this.intervall.max-1].date,
       intervall: intervall,
-      data: data,
+      intervallLimits: Intervall(0, length),
       update: this.update,
     );
 
@@ -98,6 +129,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: Drawer(
         child: DrawerPart()
@@ -137,8 +169,6 @@ class _HomePageState extends State<HomePage> {
         
         elevation: 0,
       ),
-
-
 
       //_body section of the page
       body: ListView(

@@ -16,8 +16,11 @@ class CurrentTempData extends StatefulWidget {
   ///the unit of measurement of the indicator
   String _unit;
 
-  ///the list of the points of the line chart
-  List<Data> _data;
+  ///the value that the indicator will show
+  double _data;
+
+  ///the date that the indicator will show
+  DateTime _date;
 
   ///the color of the indicator
   Color _colore;
@@ -31,12 +34,6 @@ class CurrentTempData extends StatefulWidget {
   ///the callBack function that permit to change the showed data
   Function _selectData;
 
-  ///the index of the showed data
-  int _index;
-
-  ///the value at the respective [_index]
-  double _finalValue;
-
   ///create and return all the temperature indicator section 
   ///including the part with all the neccessary information 
   ///such as:
@@ -44,17 +41,17 @@ class CurrentTempData extends StatefulWidget {
   ///2. the unit of measurment
   ///3. the date of that value
   ///4. the two button to move around the chart
-  CurrentTempData(String unit, List<Data> data, Color color, double width, double height, int index, {Function datoSelezionato}){
+  CurrentTempData(String unit, double data, DateTime date, Color color, double width, double height, {Function datoSelezionato}){
     this._unit = unit;
     this._data = data;
+    this._date = date;
+
     this._colore = color;
     this._width = width;
     this._height = height;
     
     this._selectData = datoSelezionato;
 
-    this._index = index;
-    this._finalValue = this._data[this._index].value;
   }
 
   @override
@@ -63,13 +60,10 @@ class CurrentTempData extends StatefulWidget {
 
 class _CurrentTempDataState extends State<CurrentTempData> {
 
-  ///initialize: [_index] at the last index of the [_data] list
-  ///and [_finalValue] with the value at [_index]
+  
   @override
   void initState() {
-    //_ by default the [_index] is set at the end of the [_data] list
-    this.widget._index = widget._data.length-1;
-    this.widget._finalValue = widget._data[this.widget._index].value;
+    
     super.initState();
   }
 
@@ -97,12 +91,12 @@ class _CurrentTempDataState extends State<CurrentTempData> {
             child:  TweenAnimationBuilder(
               duration: const Duration(seconds: 1),
               curve: Curves.easeOutQuad,
-              tween: Tween<double>(begin: 0, end: this.widget._finalValue),
-              builder: (_, _value, __) {
+              tween: Tween<double>(begin: 0, end: this.widget._data),
+              builder: (BuildContext context, double  value, Widget child) {
 
                 return Container(//_ indicator
                   child: CustomPaint(
-                    painter: Termometer(_value, 100, widget._colore),//IndicatoreAnalogico(_value, 135, 270, 100, Colors.red),
+                    painter: Termometer(value, 40, -30, widget._colore),//IndicatoreAnalogico(_value, 135, 270, 100, Colors.red),
                     size: Size(widget._width, widget._height),
 
                     child: Container(
@@ -119,7 +113,7 @@ class _CurrentTempDataState extends State<CurrentTempData> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  (this.widget._index == widget._data.length-1 ? "today's" : widget._data[this.widget._index].date) + " value",
+                                  "${widget._date.toString().split(" ")[0]} value",
                                   style: TextStyle(fontSize: 18),
                                 ),
 
@@ -127,7 +121,7 @@ class _CurrentTempDataState extends State<CurrentTempData> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(//_ part that show the value
-                                      "${_value.toInt()}",
+                                      "${double.parse(value.toStringAsFixed(1))}",
                                       style: TextStyle(fontSize: 60),
                                     ),
 

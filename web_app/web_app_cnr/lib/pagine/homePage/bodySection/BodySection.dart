@@ -1,9 +1,11 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'dataSection/datiCorrenti/CurrentWindData.dart';
 import 'dataSection/datiCorrenti/CurrentTempData.dart';
 import 'dataSection/datiCorrenti/CurrentOzonData.dart';
+import 'dataSection/datiCorrenti/CurrentUmidityData.dart';
 
-import '../HomePage.dart' show Data;
+import '../HomePage.dart' show Data, WindValue;
 
 import 'dataSection/Graph.dart';
 
@@ -16,6 +18,7 @@ import 'dataSection/Graph.dart';
 ///3. umidity data
 ///4. wind data (strength and direction)
 class BodySection extends StatefulWidget {
+  
 
   ///the list of the points of the line chart
   List<Data> _data;
@@ -27,7 +30,7 @@ class BodySection extends StatefulWidget {
   int _tempIndex;
 
   ///the index of the umidity data showed in the indicator
-  int _umidiyIndex;
+  int _umidityIndex;
 
   ///the index of the wind data showed in the indicator
   int _windIndex;
@@ -39,7 +42,7 @@ class BodySection extends StatefulWidget {
   ///the temperature data at the respective [_tempIndex]
   Data _tempSelectedData;
 
-  ///the umidity data at the respective [_umidiyIndex]
+  ///the umidity data at the respective [_umidityIndex]
   Data _umiditySelectedData;
 
   ///the wind data at the respective [_windIndex]
@@ -105,12 +108,12 @@ class BodySection extends StatefulWidget {
 
     this._ozonIndex = this._data.length-1;
     this._tempIndex = this._data.length-1;
-    this._umidiyIndex = this._data.length-1;
+    this._umidityIndex = this._data.length-1;
     this._windIndex = this._data.length-1;
 
     this._ozonSelectedData = this._data[this._ozonIndex];
     this._tempSelectedData = this._data[this._tempIndex];
-    this._umiditySelectedData = this._data[this._umidiyIndex];
+    this._umiditySelectedData = this._data[this._umidityIndex];
     this._windSelectedData = this._data[this._windIndex];
   }
 
@@ -128,19 +131,29 @@ class _BodySectionState extends State<BodySection>{
 
     this.widget._ozonSelectedData = this.widget._data[this.widget._ozonIndex];
     this.widget._tempSelectedData = this.widget._data[this.widget._tempIndex];
-    this.widget._umiditySelectedData = this.widget._data[this.widget._umidiyIndex];
+    this.widget._umiditySelectedData = this.widget._data[this.widget._umidityIndex];
     this.widget._windSelectedData = this.widget._data[this.widget._windIndex];
     
 
     super.initState();
   }
 
+  Color chooseColors(double bottomLimit, double mediumLimit, double topLimit, double data){
+    Color color = Colors.red;
+    if(data < bottomLimit) color = Colors.lightBlue;
+    else if(data > bottomLimit && data < mediumLimit) color = Colors.green;
+    else if(data > mediumLimit && data < topLimit) color = Colors.yellow;
+
+    return color;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    
-    double width = 250;
-    double height = 250;
+
+    double width = 270;
+    double height = 270;
 
     double dataSectionHeight = 400;
 
@@ -169,7 +182,14 @@ class _BodySectionState extends State<BodySection>{
                 //_ line chart
                 Expanded(
                   flex: 6,
-                  child: Center(child: DateTimeLineChart.withDate(widget._data, this.widget._ozonSelectedData, charts.MaterialPalette.blue.shadeDefault))
+                  child: Center(child: DateTimeLineChart.withDate(
+                    data: <double>[ for(int i=0; i<widget._data.length; i++) widget._data[i].ozonValue ],
+                    date: <DateTime>[ for(int i=0; i<widget._data.length; i++) widget._data[i].date ],
+                    
+                    selData: widget._ozonSelectedData.ozonValue,
+                    selDate: widget._ozonSelectedData.date,
+                    color: charts.MaterialPalette.blue.shadeDefault
+                  ))
                 ),
 
                 //_ indicator
@@ -177,11 +197,13 @@ class _BodySectionState extends State<BodySection>{
                   flex: 4,
                   child: CurrentOzonData(
                     "mg/l",
-                    widget._data,
-                    Colors.lightBlue,
+                    widget._data[widget._ozonIndex].ozonValue,
+                    widget._data[widget._ozonIndex].date,
+
+                    chooseColors(10, 20, 30, widget._data[widget._ozonIndex].ozonValue),
                     width,
                     height,
-                    widget._ozonIndex,
+                    //widget._ozonIndex,
                     
                     selectData: (int deltaIndex){
                       setState(() {
@@ -199,7 +221,7 @@ class _BodySectionState extends State<BodySection>{
                     },
 
                   ),
-                )
+                ) 
 
 
               ],
@@ -236,11 +258,12 @@ class _BodySectionState extends State<BodySection>{
                   flex: 4,
                   child: CurrentTempData(
                     "°C",
-                    widget._data,
-                    Colors.red,
+                    widget._data[widget._tempIndex].tempValue,
+                    widget._data[widget._tempIndex].date,
+
+                    chooseColors(0, 20, 30, widget._data[widget._tempIndex].tempValue),
                     width,
                     height,
-                    widget._tempIndex,
 
                     datoSelezionato: (int indice){
                       setState(() {
@@ -263,7 +286,14 @@ class _BodySectionState extends State<BodySection>{
 
                 Expanded(//_ chart
                   flex: 6,
-                  child: Center(child: DateTimeLineChart.withDate(widget._data, this.widget._tempSelectedData, charts.MaterialPalette.red.shadeDefault))
+                  child: Center(child: DateTimeLineChart.withDate(
+                    data: <double>[ for(int i=0; i<widget._data.length; i++) widget._data[i].tempValue ],
+                    date: <DateTime>[ for(int i=0; i<widget._data.length; i++)  widget._data[i].date ],
+
+                    selData: widget._tempSelectedData.tempValue,
+                    selDate: widget._tempSelectedData.date,
+                    color: charts.MaterialPalette.red.shadeDefault
+                  ))
                 ),
 
 
@@ -277,6 +307,8 @@ class _BodySectionState extends State<BodySection>{
     );
     //+_ Temperature section
 
+
+    
     //+_ Umidity section 
     widget.umiditySection = Container(
       margin: EdgeInsets.fromLTRB(20, 0, 0, 20),
@@ -299,29 +331,37 @@ class _BodySectionState extends State<BodySection>{
 
                 Expanded(//_ chart
                   flex: 6,
-                  child: Center(child: DateTimeLineChart.withDate(widget._data, this.widget._umiditySelectedData, charts.MaterialPalette.yellow.shadeDefault))
+                  child: Center(child: DateTimeLineChart.withDate(
+                    data: <double>[ for(int i=0; i<widget._data.length; i++) widget._data[i].umidityValue ],
+                    date: <DateTime>[ for(int i=0; i<widget._data.length; i++) widget._data[i].date ],
+
+                    selData: widget._umiditySelectedData.umidityValue,
+                    selDate: widget._umiditySelectedData.date,
+                    color: charts.MaterialPalette.yellow.shadeDefault
+                  ))
                 ),
 
                 Expanded(//_ indicator
                   flex: 4,
-                  child: CurrentOzonData(
+                  child: CurrentUmidityData(
                     "%",
-                    widget._data,
-                    Colors.amber,
+                    widget._data[widget._umidityIndex].umidityValue,
+                    widget._data[widget._umidityIndex].date,
+
+                    chooseColors(20, 50, 70, widget._data[widget._umidityIndex].umidityValue),
                     width,
                     height,
-                    widget._umidiyIndex,
 
                     selectData: (int indice){
                       setState(() {
                         //set the umidityIndex to 0 if the sum between umidityIndex and deltaIndex is reaching the low limit
-                        if(widget._umidiyIndex + indice < 0) widget._umidiyIndex = 0;
+                        if(widget._umidityIndex + indice < 0) widget._umidityIndex = 0;
                         //set the umidityIndex to _data.length-1 if the sum between umidityIndex and deltaIndex is reaching the top limit
-                        else if(widget._umidiyIndex + indice >= widget._data.length) widget._umidiyIndex = widget._data.length-1;
+                        else if(widget._umidityIndex + indice >= widget._data.length) widget._umidityIndex = widget._data.length-1;
                         //if neighter the two condition before are true then the umidityIndex will increase or decrease
-                        else widget._umidiyIndex += indice;
+                        else widget._umidityIndex += indice;
 
-                        widget._umiditySelectedData = this.widget._data[widget._umidiyIndex];
+                        widget._umiditySelectedData = this.widget._data[widget._umidityIndex];
                         
                       });
                       
@@ -365,16 +405,20 @@ class _BodySectionState extends State<BodySection>{
 
                 Expanded(//_ indicator
                   flex: 4,
-                  child: CurrentOzonData(
+                  child: CurrentWindData(
                     "km/h",
-                    widget._data,
-                    Colors.green,
+                    widget._data[widget._windIndex].windValue,
+                    widget._data[widget._windIndex].date,
+
+                    chooseColors(10, 30, 50, widget._data[widget._windIndex].windValue.strenght),
                     width,
                     height,
-                    widget._windIndex,
 
-                    selectData: (int indice){
+                    selectData: (int indice, Function updateAnimation){
                       setState(() {
+                        //print("${strenght.value}");
+                        WindValue begin = WindValue(widget._data[widget._windIndex].windValue.strenght, widget._data[widget._windIndex].windValue.direction);
+
                         //set the windIndex to 0 if the sum between windIndex and deltaIndex is reaching the low limit
                         if(widget._windIndex + indice < 0) widget._windIndex = 0;
                         //set the windIndex to _data.length-1 if the sum between windIndex and deltaIndex is reaching the top limit
@@ -383,6 +427,10 @@ class _BodySectionState extends State<BodySection>{
                         else widget._windIndex += indice;
 
                         widget._windSelectedData = this.widget._data[widget._windIndex];
+
+                        WindValue end = WindValue(widget._windSelectedData.windValue.strenght, widget._windSelectedData.windValue.direction);
+                        updateAnimation(begin, end);
+                        
                         
                       });
                       
@@ -394,7 +442,14 @@ class _BodySectionState extends State<BodySection>{
 
                 Expanded(//_ chart
                   flex: 6,
-                  child: Center(child: DateTimeLineChart.withDate(widget._data, this.widget._windSelectedData, charts.MaterialPalette.green.shadeDefault))
+                  child: Center(child: DateTimeLineChart.withDate(
+                    data: <double>[ for(int i=0; i<widget._data.length; i++) widget._data[i].windValue.strenght ],
+                    date: <DateTime>[ for(int i=0; i<widget._data.length; i++) widget._data[i].date ],
+
+                    selData: widget._windSelectedData.windValue.strenght,
+                    selDate: widget._windSelectedData.date,
+                    color: charts.MaterialPalette.green.shadeDefault
+                  ))
                 ),
 
               ],
@@ -412,8 +467,9 @@ class _BodySectionState extends State<BodySection>{
     return Column(
       children: <Widget>[
 
+ 
         widget.ozonSection,
-
+        
         widget.temperatureSection,
 
         widget.umiditySection,
@@ -424,4 +480,5 @@ class _BodySectionState extends State<BodySection>{
       ],
     );
   }
+
 }

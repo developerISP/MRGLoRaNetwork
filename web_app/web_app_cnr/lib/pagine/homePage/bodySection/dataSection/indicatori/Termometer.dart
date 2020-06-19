@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
+///Draw the temperature indicator and parse the value to trasform it in the height of the "mercury"
 class Termometer extends CustomPainter{
 
   ///the color of the termometer
@@ -8,6 +8,8 @@ class Termometer extends CustomPainter{
   
   ///the maximun value that the termometer can reach
   double maxValue;
+
+  double minValue;
 
   ///the height of the "mercury" in the indicator 
   double heightOfMercury;
@@ -18,7 +20,7 @@ class Termometer extends CustomPainter{
   ///the radius of the ball at the bottom of the termometer (external part) 
   double exRadius = 50;
   
-  ///generate a termometer with the given parameter
+  ///generate a termometer with the given parameters
   ///
   ///the parameter are:
   ///1. `value`: decide how much the mercury column have to rise
@@ -30,18 +32,21 @@ class Termometer extends CustomPainter{
   ///
   ///is checked also if the value overtake the maxValue and in that case
   ///the value will be set to the maximum
-  Termometer(double value, double maxValue, Color color){
+  Termometer(double value, double maxValue, double minValue,  Color color){
     this.color = color;
     this.maxValue = maxValue;
+    this.minValue = minValue;
 
-    this.heightOfMercury = mod(value) <= maxValue 
-    ? (value / this.maxValue)
-    : 1;
+    this.heightOfMercury = value >= this.minValue && value <= this.maxValue
+    ? (mod(minValue) + value) / (mod(this.minValue) + this.maxValue)
+    : value < this.minValue
+      ? 0
+      : 1;
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    int moveToLeft = -50;
+    int moveToLeft = -45;
 
     //_ set the center of the canvas
     Offset center = Offset(size.width/2 +moveToLeft, size.height/2);
@@ -85,7 +90,7 @@ class Termometer extends CustomPainter{
     ..addOval(Rect.fromCircle(center: shadowCenter, radius: (exRadius-(exRadius-inRadius)/2)-5 ));
 
     //_ render everything
-    canvas.drawShadow(shadow, Colors.black54, 7, true);
+    canvas.drawShadow(shadow, Colors.black, 5, true);
     canvas.drawPath(externalPart, column);
     canvas.drawPath(innerPart, mercury);
 

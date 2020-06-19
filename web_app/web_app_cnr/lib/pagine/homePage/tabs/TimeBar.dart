@@ -5,23 +5,29 @@ import '../HomePage.dart' show Data, Intervall;
 ///of the time intervall to show on the chart
 class TimeBar extends StatefulWidget {
   ///the date of the starting point of the intervall
-  Data startDate;
+  DateTime startDate; 
 
   ///the date of the ending point of the intervall
-  Data endDate;
+  DateTime endDate; 
 
   ///The variable for the intervall
-  Intervall intervall;
+  Intervall intervall; 
 
-  ///The variable for the line chart
-  List<Data> data;
+  Intervall intervallLimits; 
 
   ///the callBack function to update the intervall in the homePage
   Function update; 
 
   ///generate a timeBar to define the starting and the ending point
   ///of the time intervall to show on the chart
-  TimeBar({this.startDate, this.endDate, this.intervall, this.data, this.update});
+  TimeBar({DateTime startDate, DateTime endDate, Intervall intervall, Intervall intervallLimits, Function update}){
+    this.intervall = intervall;
+    this.update = update;
+    this.intervallLimits = intervallLimits;
+
+    this.endDate = endDate;
+    this.startDate = startDate;
+  }
 
   ///the function that was called in the homePage when we close the bottom sheet
   void updateDate(){
@@ -41,29 +47,54 @@ class _TimeBarState extends State<TimeBar> {
     super.initState();
   }
 
+  ///return the module of n
+  double mod(double n){
+    return n >= 0
+    ? n
+    : n*(-1);
+  }
+
   ///Change the starting point of the intervall
   void changeStart(int delta){
     setState(() {
-      widget.intervall.min = widget.intervall.min + delta < 0
-      ? 0
+      int precIndex = widget.intervall.min;
+
+      widget.intervall.min = widget.intervall.min + delta < widget.intervallLimits.min
+      ? widget.intervallLimits.min
       : widget.intervall.min + delta >= widget.intervall.max-2
         ? widget.intervall.max-2
         : widget.intervall.min + delta;
 
-      widget.startDate = widget.data[widget.intervall.min];
+      int deltaIndex = widget.intervall.min - precIndex;
+ 
+      widget.startDate = deltaIndex < 0
+      ? widget.startDate.subtract(Duration(days: -deltaIndex ))
+      : deltaIndex != 0
+        ? widget.startDate.add(Duration(days: deltaIndex))
+        : widget.startDate;
+
     });
   }
 
   ///Change the finish point of the intervall
   void changeFinish(int delta){
     setState(() {
+      int precIndex = widget.intervall.max;
+
       widget.intervall.max = widget.intervall.max + delta <= widget.intervall.min+2
       ? widget.intervall.min+2
-      : widget.intervall.max + delta > widget.data.length
-        ? widget.data.length
+      : widget.intervall.max + delta > widget.intervallLimits.max
+        ? widget.intervallLimits.max
         : widget.intervall.max + delta;
 
-      widget.endDate = widget.data[widget.intervall.max-1];
+      int deltaIndex = widget.intervall.max - precIndex;
+
+      widget.endDate = deltaIndex < 0
+      ? widget.endDate.subtract(Duration(days: -deltaIndex ))
+      : deltaIndex != 0
+        ? widget.endDate.add(Duration(days: deltaIndex))
+        : widget.endDate;
+
     });
   }
   
@@ -122,7 +153,7 @@ class _TimeBarState extends State<TimeBar> {
             ),
 
             alignment: Alignment.center,
-            child: Text(" "+widget.startDate.date+" ", style: TextStyle(fontSize: 17)),
+            child: Text(" "+ widget.startDate.toString().split(" ")[0] +" ", style: TextStyle(fontSize: 17)),
           ),
           
 
@@ -148,7 +179,7 @@ class _TimeBarState extends State<TimeBar> {
             ),
             
             alignment: Alignment.center,
-            child: Text(" "+widget.endDate.date+" ", style: TextStyle(fontSize: 17))
+            child: Text(" "+widget.endDate.toString().split(" ")[0]+" ", style: TextStyle(fontSize: 17))
           ),
 
           //_ two button

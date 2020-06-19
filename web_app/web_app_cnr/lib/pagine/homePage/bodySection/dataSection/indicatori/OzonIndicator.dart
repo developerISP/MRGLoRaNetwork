@@ -23,12 +23,16 @@ class OzonIndicator extends CustomPainter{
   ///the maximum value of the indicator
   double maxValue;
 
+  ///the minimun value of the indicator
+  double minValue;
+
   ///generate a basis indicator
   ///
   ///* the angle of the pointer is half of the maximum angle
   ///* the [startAngle] is 135°
   ///* the [finishAngle] is 270°
   ///* the [maxValue] is 270°
+  ///
   OzonIndicator.base(){
     this.angle = 0.5 * 270;
     this.startAngle = inRadiant(135);
@@ -37,9 +41,9 @@ class OzonIndicator extends CustomPainter{
     this.maxValue = 270;
   }
 
-  ///generate an indicator with the given parameters
+  ///generate the ozon indicator with the given parameters
   ///
-  ///parameters:
+  ///the parameters are:
   ///* `value` the value that you want to show
   ///* `maxValue` the maximum value that the indicator can reach
   ///* `color` the color of the indicator
@@ -49,15 +53,20 @@ class OzonIndicator extends CustomPainter{
   ///
   ///is checked also if the value overtake the maxValue and in that case
   ///the value will be set to the maximum
-  OzonIndicator(double value, double maxValue, Color color){
+  OzonIndicator(double value, double maxValue, double minValue, Color color){
     this.maxValue = maxValue;
+    this.minValue = minValue;
   
     this.startAngle = inRadiant(135) ;
     this.finishAngle = inRadiant(270);
 
-    this.angle = mod(value) <= maxValue 
-    ? (value / this.maxValue) * 270
-    : 270;
+
+
+    this.angle = value <= this.maxValue && value >= this.minValue
+    ? ( (mod(this.minValue) + value) / (this.maxValue + mod(this.minValue)) ) * 270
+    : value < this.minValue 
+      ? 1
+      : 270;
 
     this.color = color;
   }
@@ -89,7 +98,8 @@ class OzonIndicator extends CustomPainter{
 
     //_ render everything
     canvas.drawPath(arc, arcStyle);
-    canvas.drawShadow(cirlce, Colors.black54, 7, true);
+
+    canvas.drawShadow(cirlce, Colors.black, 5, true);
     canvas.drawCircle(center, radius - 30, circleStyle);
     
   }

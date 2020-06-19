@@ -30,9 +30,9 @@ class DateTimeLineChart extends StatelessWidget {
   ///the constructor that create the chart at the given data and color
   ///
   ///SelData indicate the point showed by the indicator
-  factory DateTimeLineChart.withDate(data, selData, color) {
+  factory DateTimeLineChart.withDate({List<double> data, List<DateTime> date, double selData, DateTime selDate, color}) {
     return new DateTimeLineChart(
-      _createData(data, selData, color),
+      _createData(data, date, selData, selDate, color),
       color: color,
 
       // Disable animations.
@@ -50,7 +50,7 @@ class DateTimeLineChart extends StatelessWidget {
       animate: animate,
       
       defaultRenderer:
-          new charts.LineRendererConfig(includeArea: true, stacked: false),
+          new charts.LineRendererConfig(includeArea: false, stacked: false),
 
       
       customSeriesRenderers: [
@@ -71,13 +71,15 @@ class DateTimeLineChart extends StatelessWidget {
   /// ```
   /// 
   /// and then return the object that will be used to render the chart
-  static List<charts.Series<Point, DateTime>> _createData(data, selData, color) {
+  static List<charts.Series<Point, DateTime>> _createData(data, date, selData, selDate, color) {
+
     final graphData = [
+      
       for(int i=0; i<data.length; i++) 
-        fit(data[i])
+        fit(data[i], date[i])
     ];
 
-    final selectedData = [fit(selData)];
+    final selectedData = [fit(selData, selDate)];
 
     return [
       new charts.Series<Point, DateTime>(
@@ -104,31 +106,9 @@ class DateTimeLineChart extends StatelessWidget {
     ];
   }
 
-  //todo forse andrà adattato per un array di struct invece che per un array di stringhe
-  ///Trasform the given string into a Point object
-  ///
-  ///this method split the string to get every single field of the information
-  ///and use it to construct and return the Point object
-  ///
-  ///the format of the string data is: dd/mm/aaaa and value
-  static Point fit(data){
-    double value = 0;
-    int year = 0;
-    int month = 0;
-    int day = 0;
-    int hour = 0;
-
-    //_il formato del dato è dd/mm/aaaa e value
-    value = data.value;
-
-    List<String> date = data.date.split('/');
-
-    day = int.parse(date[0]);
-    month = int.parse(date[1]);
-    year = int.parse(date[2]);
-    //hour = int.parse(date[3]);
-    
-    return Point(new DateTime(year, month, day, /*hour*/), value);
+  ///Trasform the given data and dates into a Point object
+  static Point fit(double data, DateTime date){ 
+    return Point(new DateTime(date.year, date.month, date.day, date.hour), data);
   }
 }
 
