@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>
+            Stations data
+        </title>
+        <style>
+            table,table * {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>{{ title }}</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th># Of Row</th>
+                    {% for h in headers %}
+                    <th>{{ h }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in data %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    {% for v in r.values()%}
+                        <td>{{v}}</td>
+                    {% endfor %}
+
+                </tr>
+                </tbody>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
