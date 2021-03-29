@@ -5,29 +5,29 @@ This is the repository for the school-work project between Istitute of Polar Sci
 The wonderful people involved in the ROSY project are all students, as they will never stop to learn! 
 
 The young team in electronics, computer science, power management that built up the work is:
-Niccolò Baseggio
-Davide Dal Bo
-Andrea De Marchi
-Michele Ferrarese
-Massimiliano Granziol
-Marco Martini
-Silvia Mondin
-Federico Peruzzo
-Roberto Pomiato
-Nicolò Rasera
+Niccolò Baseggio,
+Davide Dal Bo,
+Andrea De Marchi,
+Michele Ferrarese,
+Massimiliano Granziol,
+Marco Martini,
+Silvia Mondin,
+Federico Peruzzo,
+Roberto Pomiato,
+Nicolò Rasera,
 Nicola Voltarel
 
 The group is trained and motivated by selfless and great teachers:
-Alessandro Rocco Monteduro
-Monica Disarò
-Eugenio Rossi
+Alessandro Rocco Monteduro,
+Monica Disarò,
+Eugenio Rossi,
 Giorgio Damian
 
 The project is coordinated by enthusiastic researchers:
-Federico Dallo
-Daniele Zannoni
-Fabrizio De Blasi
-Jacopo Gabrieli
+Federico Dallo,
+Daniele Zannoni,
+Fabrizio De Blasi,
+Jacopo Gabrieli,
 Carlo Barbante
 
 # When
