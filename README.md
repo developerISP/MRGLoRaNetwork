@@ -1,4 +1,4 @@
-# The Col Margherita LoRa Project (ROSY: Remote Observatory SYstem)
+# Col Margherita LoRa Project (ROSY: Remote Observatory SYstem)
 This is the repository for the school-work project between the Istitute of Polar Science ISP-CNR of Venice and the ITIS Max Planck of Villorba (TV)
 
 # Who
