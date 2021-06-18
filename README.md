@@ -4,7 +4,7 @@ This is the repository for the school-work project between the Istitute of Polar
 # Who
 The wonderful people involved in the ROSY project are all students, as they will never stop to learn! 
 
-The young team in electronics, computer science, power management that built up the work is:
+The young team in electronics, computer science, power management and telecommunications that built up the work is:
 Nicolò Baseggio,
 Davide Dal Bo,
 Andrea De Marchi,
